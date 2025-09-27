@@ -1,3 +1,7 @@
+---
+title: "CCNA IOS CLI COMMANDS"
+layout: plain
+---
 # **CCNA IOS CLI Commands Cheatsheet**
 *Posted on: July 4th, 2025*
 ---

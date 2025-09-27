@@ -1,3 +1,7 @@
+---
+title: "COMPUTER NETWORKING FUNAMENTALS CHEATSHEET"
+layout: plain
+---
 # **Computer Networking Fundamentals Cheatsheet**
 *Posted on: April 1st, 2025*
 ---

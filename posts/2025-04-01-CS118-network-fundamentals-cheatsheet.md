@@ -24,4 +24,3 @@ This post is a quick overview of my networking fundamentals cheatsheet — the f
 - **Research** → These same layers and protocols are what new models like NDN (Named Data Networking) try to evolve.
 ---
 Stay tuned — I’ll be posting more **focused cheatsheets** (Cisco CLI Commands), updates about my research projects at UCLA, classwork, and Network Automation.
----

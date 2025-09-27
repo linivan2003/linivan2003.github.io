@@ -2,7 +2,7 @@
 layout: default
 title: Home
 ---
-# Computer Networking Blog
+# Ivan Lin - Computer Networking Blog
 Networking Fundamentals, Engineering, Automation, and Research
 
 ## Recent Posts

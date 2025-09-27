@@ -1,7 +1,8 @@
 ---
 title: Network Fundamentals Cheatsheets
-layout: single
+layout: page
 ---
+*Posted on: April 1st, 2025*
 This post is a quick overview of my networking fundamentals cheatsheet — the foundation for CCNA studies, my homelab experiments, and also the research work I’m doing at UCLA’s Internet Research Lab. These fundamentals cover how data moves through the network stack, how devices discover each other, and how communication stays reliable and secure. These cheatsheets are based on CS118 at UCLA and are based on the TCP/IP Model. I commonly refer back to them in my work.
 ---
 ## Key Topics Covered

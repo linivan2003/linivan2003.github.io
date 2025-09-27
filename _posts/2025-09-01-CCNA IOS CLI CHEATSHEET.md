@@ -1,6 +1,6 @@
 ---
 title: "CCNA IOS CLI Commands Cheatsheet"
-layout: page
+layout: single
 ---
 
 A practical quick-reference for Cisco IOS CLI — covering IPv4, routing, VLANs, trunking, STP, EtherChannel, and more. This guide is designed for **CCNA study** and my **networking homelab**.

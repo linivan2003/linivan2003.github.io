@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Transport Layer Security | Ivan Lin — California</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Transport Layer Security" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/posts/2025-03-15-TLS.html" />
+<meta property="og:url" content="http://localhost:4000/posts/2025-03-15-TLS.html" />
+<meta property="og:site_name" content="Ivan Lin — California" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Transport Layer Security" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Transport Layer Security","url":"http://localhost:4000/posts/2025-03-15-TLS.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=e8198106e87556f352cf8f3cb0136f7382866f32">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1><a href="http://localhost:4000/">Ivan Lin — California</a></h1>
+
+        
+
+        <p></p>
+
+        
+        <p class="view"><a href="https://github.com/linivan2003/linivan2003.github.io">View the Project on GitHub <small>linivan2003/linivan2003.github.io</small></a></p>
+        
+
+        
+
+        
+      </header>
+      <section>
+
+      <h1 id="transport-layer-security-project"><strong>Transport Layer Security Project</strong></h1>
+
+<h2 id="posted-on-march-15th-2025"><em>Posted on: March 15th, 2025</em></h2>
+<h2 id="overview">Overview</h2>
+<p>This project implements a simplified TLS protocol on top of a reliable transport layer.<br />
+It provides:</p>
+<ul>
+  <li><strong>Identity</strong> through certificates and signatures</li>
+  <li><strong>Privacy</strong> via AES-256-CBC encryption</li>
+  <li><strong>Integrity</strong> with HMAC-SHA256</li>
+</ul>
+
+<p>The handshake uses nonces, ephemeral keys, and a transcript HMAC to establish a shared secret before exchanging encrypted data.</p>
+
+<hr />
+
+<h2 id="build--run">Build &amp; Run</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make          <span class="c"># build client and server</span>
+./server &lt;port&gt;
+./client &lt;<span class="nb">hostname</span><span class="o">&gt;</span> &lt;port&gt;
+</code></pre></div></div>
+
+<h2 id="debugging-process">Debugging Process</h2>
+
+<p>A big part of this project was debugging the handshake. I used the client to dump the <strong>ServerHello</strong> into a file and then inspected it with <code class="language-plaintext highlighter-rouge">hexdump</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./client localhost 8080 <span class="o">&gt;</span> server_hello.bin
+hexdump <span class="nt">-C</span> server_hello.bin | <span class="nb">head</span> <span class="nt">-n</span> 400
+</code></pre></div></div>
+
+<h3 id="example-output-from-my-client">Example output from my client:</h3>
+<p>CLIENT RESULT MY SERVER
+ ./client localhost 8080 &gt; server_hello.bin
+SEND CLIENT HELLO
+client received:<br />
+Type: 0x20
+Length: 381
+Type: 0x01
+Length: 32
+56 4f a0 38 7b 83 bf 41 c7 6c a4 34 c4 62 65 f7 76 cf 28 27 f3 d6 9b 74 b5 9c 2f 42 c4 b7 cb 47 
+…
+Type: 0x21
+Length: 72
+30 46 02 21 00 c6 ed f5 9f 57 1e aa 9c fb a7 e0 6f 5f 3f 34 c2 24 55 …</p>
+
+<h3 id="and-from-the-hexdump-of-the-saved-file">And from the hexdump of the saved file:</h3>
+<p>HEXDUMP CLIENT RESULT MY SERVER server_hello.bin: 385 bytes
+00000000  20 fd 01 7d 01 20 56 4f  a0 38 7b 83 bf 41 c7 6c  | ..}. VO.8{..A.l|
+00000010  a4 34 c4 62 65 f7 76 cf  28 27 f3 d6 9b 74 b5 9c  |.4.be.v.(‘…t..|
+00000020  2f 42 c4 b7 cb 47 a0 b2  a1 0a 6c 6f 63 61 6c 68  |/B…G….localh|
+00000030  6f 73 74 00 02 5b 30 59  30 13 06 07 2a 86 48 ce  |ost..[0Y0…*.H.|
+…
+00000170  59 17 10 42 a2 96 61 72  1d b4 96 9e 5a 2b c9 22  |Y..B..ar….Z+.”|
+00000180  70                                                |p|</p>
+
+<h3 id="by-comparing-the-raw-hex-with-the-expected-structure-in-the-spec-i-caught-bugs-like">By comparing the raw hex with the expected structure in the spec, I caught bugs like:</h3>
+
+<p>Mismatched length fields in TLV encoding</p>
+
+<p>Stale nonces being reused</p>
+
+<p>MAC computed over the wrong fields</p>
+
+<p>This workflow gave me confidence that my implementation matched the spec byte-for-byte.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<h4 id="this-project-gave-me-hands-on-experience-implementing-a-real-world-security-protocol-from-the-ground-up-i-learned">This project gave me hands-on experience implementing a real-world security protocol from the ground up. I learned:</h4>
+
+<p>How the TLS handshake ensures identity, privacy, and integrity.</p>
+
+<p>How to use hexdumps and low-level debugging to track down tricky networking protocol errors.</p>
+
+<p>While challenging, this project deepened my understanding of applied cryptography and secure communication protocols. It showed me how theory maps to real code, and how small mistakes in encoding or crypto can break an entire system.</p>
+
+<p>Big thanks to Ryan and Uma for the help on the project!</p>
+
+<p><a href="https://github.com/linivan2003/Transport-Layer-Security">Find the Repository Here</a></p>
+
+
+      </section>
+      <footer>
+        
+        <p>This project is maintained by <a href="https://github.com/linivan2003">linivan2003</a></p>
+        
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="/assets/js/scale.fix.js"></script>
+  </body>
+</html>

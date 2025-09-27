@@ -1,0 +1,10 @@
+bundle exec jekyll serve --livereload
+
+---
+title: "<title>"
+layout: default
+---
+# **<Title>**
+
+*Posted on: <date>*
+---
